@@ -93,4 +93,71 @@ def generate_board_fixed(M, N, X, Y, P=0, Q=0):
     return board
 
 
+"""
+A function for generating a M x N board with a user-specified fraction of squares containing obstacles and objectives.
+Obstacles and objectives are distributed randomly according to user-specified randomization policies.
+Requires:
+    - M = number of rows
+    - N = number of columns
+    - f = fraction of squares that should conatin obstacles
+    - g = fraction of squares that should contain objectives
+    - P = randomization policy for obstacles (default = uniform)
+    - Q = randomization policy for objectives (default = uniform)
+Returns:
+    - An MxN NumPy array 'board' where:
+        - board[i][j] = 0 --> square contains nothing
+        - board[i][j] = 1 --> square contains obstacle
+        - board[i][j] = 2 --> square contains objective
+"""
+def generate_board_fractional(M, N, f, g, P=0, Q=0):
+    ### Initialize board to all zeros
+    board = np.zeros((M,N))
 
+    ### Determine how many obstacles and objectives to place.
+    num_squares = M * N
+    if f != 0:
+        num_obstacles = max(1, M * N * f)
+    else:
+        num_obstacles = 0
+    if g != 0:
+        num_objectives = max(1, M * N * g)
+    else:
+        num_objectives = 0
+    
+    ### Determine if requirements are feasible
+    if num_obstacles + num_objectives > (M * N) - 1:
+        print "Unsatisfiable board."
+        print "Exiting now."
+        exit()
+
+    ### Place obstacles according to policy P
+    num_obstacles_to_place = X
+    while num_obstacles_to_place:
+        ### Uniform random placement
+        if P == 0:
+            ### Generate random coordinates.
+            x_coord = np.random.randint(0, M)
+            y_coord = np.random.randint(0, N)
+            if board[x_coord][y_coord] == 0:
+                board[x_coord][y_coord] = 1
+                num_obstacles_to_place -= 1
+        else:
+            print "Unsupported placement policy specified. Exiting."
+            exit()
+    
+    ### Place objectives according to policy P
+    num_objectives_to_place = Y
+    while num_objectives_to_place:
+        ### Uniform random placement
+        if P == 0:
+            ### Generate random coordinates.
+            x_coord = np.random.randint(0, M)
+            y_coord = np.random.randint(0, N)
+            if board[x_coord][y_coord] == 0:
+                board[x_coord][y_coord] = 2
+                num_objectives_to_place -= 1
+        else:
+            print "Unsupported placement policy specified. Exiting."
+            exit()
+
+    return board
