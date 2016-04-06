@@ -1,0 +1,8 @@
+# Ignore .pyc files
+*.pyc
+
+# Ignore LaTeX junk 
+**/report/*.aux
+**/report/*.log
+**/report/*.bbl
+**/report/*.blg
