@@ -59,7 +59,7 @@ Returns:
 def generate_board_fixed(M, N, X, Y, P=0, Q=0):
     ### Initialize board to all zeros
     board = np.zeros((M,N))
-    
+
     ### Place obstacles according to policy P
     num_obstacles_to_place = X
     while num_obstacles_to_place:
@@ -74,7 +74,7 @@ def generate_board_fixed(M, N, X, Y, P=0, Q=0):
         else:
             print "Unsupported placement policy specified. Exiting."
             exit()
-    
+
     ### Place objectives according to policy P
     num_objectives_to_place = Y
     while num_objectives_to_place:
@@ -123,7 +123,7 @@ def generate_board_fractional(M, N, f, g, P=0, Q=0):
         num_objectives = max(1, M * N * g)
     else:
         num_objectives = 0
-    
+
     ### Determine if requirements are feasible
     if num_obstacles + num_objectives > (M * N) - 1:
         print "Unsatisfiable board."
@@ -131,7 +131,7 @@ def generate_board_fractional(M, N, f, g, P=0, Q=0):
         exit()
 
     ### Place obstacles according to policy P
-    num_obstacles_to_place = X
+    num_obstacles_to_place = X # Where does X come from???
     while num_obstacles_to_place:
         ### Uniform random placement
         if P == 0:
@@ -144,7 +144,7 @@ def generate_board_fractional(M, N, f, g, P=0, Q=0):
         else:
             print "Unsupported placement policy specified. Exiting."
             exit()
-    
+
     ### Place objectives according to policy P
     num_objectives_to_place = Y
     while num_objectives_to_place:
@@ -159,5 +159,51 @@ def generate_board_fractional(M, N, f, g, P=0, Q=0):
         else:
             print "Unsupported placement policy specified. Exiting."
             exit()
+
+    return board
+
+
+"""
+Function that generates a board exactly as described in the project
+rubric/description.
+Inputs:
+    - n = length of each side of the board
+    - M = number of mice (0 < M <= (n^2)/4)
+Returns:
+    - An nxn NumPy array 'board' where:
+        - board[i][j] = 0 --> square contains nothing
+        - board[i][j] = 1 --> square contains obstacle
+        - board[i][j] = 2 --> square contains objective
+    - k obstacles on board (0 <= k <= (n^2)/3)
+"""
+def generate_board_rubric(n, M):
+    # Initialize board to all zeros
+    board = np.zeros((n,n))
+
+    # Calculate total number of squares
+    squares = n ** 2
+
+    # Determine if valid M value
+    if (M <= 0) or (M > squares/4):
+        M = (n ** 2)/4
+        print "Invalid value for M, setting M to %d" % M
+
+    # Determine number of obstacles to place
+    k = np.random.randint(squares/3 + 1) # +1 because inclusive
+
+    # Place obstacles and mice on board
+    while k or M:
+        if k:
+            # Place obstacles
+            coord = np.random.randint(n, size=2)
+            if not board[coord[0], coord[1]]:
+                board[coord[0], coord[1]] = 2
+                k -= 1
+        if M:
+            # Place mice
+            coord = np.random.randint(n, size=2)
+            if not board[coord[0], coord[1]]:
+                board[coord[0], coord[1]] = 1
+                M -= 1
 
     return board
