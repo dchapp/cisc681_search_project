@@ -116,22 +116,21 @@ def generate_board_fractional(M, N, f, g, P=0, Q=0):
     ### Determine how many obstacles and objectives to place.
     num_squares = M * N
     if f != 0:
-        num_obstacles = max(1, M * N * f)
+        num_obstacles_to_place = max(1, M * N * f)
     else:
-        num_obstacles = 0
+        num_obstacles_to_place = 0
     if g != 0:
-        num_objectives = max(1, M * N * g)
+        num_objectives_to_place = max(1, M * N * g)
     else:
-        num_objectives = 0
+        num_objectives_to_place = 0
 
     ### Determine if requirements are feasible
-    if num_obstacles + num_objectives > (M * N) - 1:
+    if num_obstacles_to_place + num_objectives_to_place > (M * N) - 1:
         print "Unsatisfiable board."
         print "Exiting now."
         exit()
 
     ### Place obstacles according to policy P
-    num_obstacles_to_place = X # Where does X come from???
     while num_obstacles_to_place:
         ### Uniform random placement
         if P == 0:
@@ -146,7 +145,6 @@ def generate_board_fractional(M, N, f, g, P=0, Q=0):
             exit()
 
     ### Place objectives according to policy P
-    num_objectives_to_place = Y
     while num_objectives_to_place:
         ### Uniform random placement
         if P == 0:
