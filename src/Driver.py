@@ -1,6 +1,7 @@
 import sys
 import time
 import pprint 
+import numpy as np
 
 from Board import *
 from SimpleGraph import *
@@ -16,7 +17,7 @@ def main():
     g = board_to_graph(b)
     #print g.edges
     start = (0, 0)
-    goal  = (len(b)-2, len(b[0])-2)
+    goal  = (np.where(b == 2)[0][0], np.where(b == 2)[1][0])
     parent, cost_to_reach = a_star_search(b, start, goal)
 
 
