@@ -3,7 +3,6 @@ from Queue import PriorityQueue
 from SimpleGraph import *
 from BoardToGraph import *
 
-
 """
 Implementation of A* search algorithm. 
 Requires:
@@ -11,7 +10,8 @@ Requires:
     - init_position = a tuple of coordinates for the starting position
     - goal_position = a tuple of coordinates for the position of the goal
 Returns:
-    - path = a path from the starting position to the goal
+    - parent = a dictionary whose keys are positions and whose values are the positions that lead to the key positions
+    - cost_to_reach = a dictionary whose keys are position and whose values are the cost to get to that position
 """
 def a_star_search(board, init_position, goal_position):
     ### Unpack
@@ -48,7 +48,7 @@ def a_star_search(board, init_position, goal_position):
             break
 
         ### Expand the frontier
-        for n in g.neighbors[current]:
+        for n in g.neighbors(current):
             ### Right? Since n is adjacent to current the cost to reach n is 1 more than cost
             ### to reach current?
             n_cost = cost_to_reach[current] + 1 
@@ -57,12 +57,14 @@ def a_star_search(board, init_position, goal_position):
                 priority = n_cost + heuristic(n, goal_position)
                 frontier.put(n, priority)
                 parent[n] = current
-
+    
     return parent, cost_to_reach
 
 
 def heuristic(position, goal):
-    return 0
+    (x1, y1) = position
+    (x2, y2) = goal
+    return abs(x1 - x2) + abs(y1 - y2)
 
 
 def heuristic_a(position_x, position_y):

@@ -4,8 +4,8 @@ import pprint
 
 from Board import *
 from SimpleGraph import *
-from SimpleNode import *
 from BoardToGraph import *
+from Search import *
 
 
 def main():
@@ -14,8 +14,41 @@ def main():
     b = generate_board_from_file(board_file)
     print b
     g = board_to_graph(b)
-    print g.edges
+    #print g.edges
+    start = (0, 0)
+    goal  = (len(b)-2, len(b[0])-2)
+    parent, cost_to_reach = a_star_search(b, start, goal)
 
+
+    current = goal
+    path = [current]
+    while parent[path[-1]] != start:
+        path.append(parent[current])
+        current = parent[current]
+    path.append(start)
+
+    print path
+
+    solution = np.array(b)
+    
+    solution_board = []
+    for i in xrange(len(solution)):
+        solution_board.append(solution[i][:])
+
+    solution_board = [ list(x) for x in solution_board ]
+    solution_board = [ [str(int(y)) for y in x] for x in solution_board ]
+
+
+    for p in path:
+        x = p[0]
+        y = p[1]
+        solution_board[x][y] = "#"
+
+    for row in solution_board:
+        print row
+
+
+    
 
     """
     M = int(sys.argv[1])
