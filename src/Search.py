@@ -58,6 +58,13 @@ def a_star_search(board, init_position, goal_position):
                 frontier.put(n, priority)
                 parent[n] = current
     
+    ### Check for existence of solution.
+    try: 
+        x = parent[goal_position]
+    except KeyError:
+        print "No solution possible"
+        exit()
+    
     return parent, cost_to_reach
 
 
@@ -71,4 +78,8 @@ def heuristic_a(position_x, position_y):
     return 0
 
 def heuristic_b(position_x, position_y):
+    return 0
+
+
+def multiobjective_a_star_search(board, start, goal_list):
     return 0

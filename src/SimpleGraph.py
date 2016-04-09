@@ -7,3 +7,4 @@ class Graph(object):
 
     def neighbors(self, node_id):
         return self.edges[node_id]
+
