@@ -94,7 +94,7 @@ def board_to_graph(board):
     for i in xrange(M):
         for j in xrange(N):
             ### If a square is empty, add it to the graph.
-            if board[i][j] == 0:
+            if board[i][j] == 0 or board[i][j] == 2:
                 #print "(" + str(i) + ", " + str(j) + ")"
                 #print get_board_neighbors( (i, j), (M, N) )
                 edges[(i, j)] = prune_invalid_board_neighbors( get_board_neighbors( (i, j), (M, N) ), board )

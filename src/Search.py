@@ -3,6 +3,8 @@ from Queue import PriorityQueue
 from SimpleGraph import *
 from BoardToGraph import *
 
+import sys
+
 """
 Implementation of A* search algorithm. 
 Requires:
@@ -13,19 +15,19 @@ Returns:
     - parent = a dictionary whose keys are positions and whose values are the positions that lead to the key positions
     - cost_to_reach = a dictionary whose keys are position and whose values are the cost to get to that position
 """
-def a_star_search(board, init_position, goal_position):
+def a_star_search(board, init_position, goal_positions):
     ### Unpack
-    init_row = init_position[0]
-    init_col = init_position[1]
-    goal_row = goal_position[0]
-    goal_col = goal_position[1]
-    board_dims = (len(board), len(board[0]))
+    #init_row = init_position[0]
+    #init_col = init_position[1]
+    #goal_row = goal_position[0]
+    #goal_col = goal_position[1]
+    #board_dims = (len(board), len(board[0]))
 
     ### Convert board to graph
     g = board_to_graph(board)
 
     ### Initially the explored set is empty
-    explored = []
+    #explored = []
 
     ### Initially the frontier consists only of the initial node
     frontier = PriorityQueue()
@@ -33,7 +35,7 @@ def a_star_search(board, init_position, goal_position):
 
     ### A dict of parent nodes
     parent = {}
-    parent[init_position] = None 
+    parent[init_position] = None
 
     ### A dict of costs to get to nodes
     cost_to_reach = {}
@@ -44,28 +46,27 @@ def a_star_search(board, init_position, goal_position):
         current = frontier.get()
 
         ### Check if current node is the goal node
-        if current == goal_position:
+        if current in goal_positions:
             break
 
         ### Expand the frontier
         for n in g.neighbors(current):
             ### Right? Since n is adjacent to current the cost to reach n is 1 more than cost
             ### to reach current?
-            n_cost = cost_to_reach[current] + 1 
+            n_cost = cost_to_reach[current] + 1
             if n not in cost_to_reach or n_cost < cost_to_reach[n]:
                 cost_to_reach[n] = n_cost
-                priority = n_cost + heuristic(n, goal_position)
+                priority = n_cost + heuristic_a(n, goal_positions)
                 frontier.put(n, priority)
                 parent[n] = current
-    
+
     ### Check for existence of solution.
-    try: 
-        x = parent[goal_position]
-    except KeyError:
-        print "No solution possible"
-        exit()
-    
-    return parent, cost_to_reach
+    for goal in goal_positions:
+        if goal in parent.keys():
+            return parent, cost_to_reach, goal
+
+    print "No solution possible"
+    exit()
 
 
 def heuristic(position, goal):
@@ -74,8 +75,14 @@ def heuristic(position, goal):
     return abs(x1 - x2) + abs(y1 - y2)
 
 
-def heuristic_a(position_x, position_y):
-    return 0
+def heuristic_a(position, goals):
+    (x1, y1) = position
+    min_dist = sys.maxint
+    for goal in goals:
+        (x2, y2) = goal
+        dist = abs(x1 - x2) + abs (y1 - y2)
+        min_dist = min(dist, min_dist)
+    return min_dist
 
 def heuristic_b(position_x, position_y):
     return 0

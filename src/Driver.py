@@ -10,28 +10,36 @@ from Search import *
 
 
 def main():
-    
+
     board_file = sys.argv[1]
     b = generate_board_from_file(board_file)
     print b
     g = board_to_graph(b)
     #print g.edges
-    start = (0, 0)
-    goal  = (np.where(b == 2)[0][0], np.where(b == 2)[1][0])
-    parent, cost_to_reach = a_star_search(b, start, goal)
+    init_pos = (0, 0)
+    start = init_pos
+    goals = zip(*np.where(b == 2))
+    solutions = []
+    while goals:
+        parent, cost_to_reach, goal = a_star_search(b, start, goals)
+        del goals[goals.index(goal)] # Remove found goal
+        solutions.append((parent, cost_to_reach, start, goal))
+        start = goal # Make found goal starting position
 
-
-    current = goal
-    path = [current]
-    while parent[path[-1]] != start:
-        path.append(parent[current])
-        current = parent[current]
-    path.append(start)
+    path = []
+    for sub_soln in solutions:
+        parent, cost, start, goal = sub_soln
+        path.append(goal)
+        current = goal
+        while parent[path[-1]] != start:
+            path.append(parent[current])
+            current = parent[current]
+    path.append(init_pos)
 
     print path
 
     solution = np.array(b)
-    
+
     solution_board = []
     for i in xrange(len(solution)):
         solution_board.append(solution[i][:])
@@ -46,10 +54,11 @@ def main():
         solution_board[x][y] = "#"
 
     for row in solution_board:
-        print row
+        print '[%s]' % ' '.join(map(str, row))
 
+    #for row in solution_board:
+    #    print row
 
-    
 
     """
     M = int(sys.argv[1])
