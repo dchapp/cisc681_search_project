@@ -195,13 +195,13 @@ def generate_board_rubric(n, M):
             # Place obstacles
             coord = np.random.randint(n, size=2)
             if not board[coord[0], coord[1]]:
-                board[coord[0], coord[1]] = 2
+                board[coord[0], coord[1]] = 1
                 k -= 1
         if M:
             # Place mice
             coord = np.random.randint(n, size=2)
             if not board[coord[0], coord[1]]:
-                board[coord[0], coord[1]] = 1
+                board[coord[0], coord[1]] = 2
                 M -= 1
 
     return board
