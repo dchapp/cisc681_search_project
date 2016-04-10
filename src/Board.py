@@ -205,3 +205,15 @@ def generate_board_rubric(n, M):
                 M -= 1
 
     return board
+
+"""
+
+"""
+def write_solution_to_file(solution_board):
+    import os
+    with open(os.getcwd() + "/solution.txt", "w") as solution_file:
+        for i in xrange(len(solution_board)):
+            for j in xrange(len(solution_board[0])):
+                solution_file.write(str(solution_board[i][j]) + " ")
+            solution_file.write("\n")
+

@@ -60,6 +60,9 @@ def main():
     #    print row
 
 
+    write_solution_to_file(solution_board)
+
+
     """
     M = int(sys.argv[1])
     N = int(sys.argv[2])
