@@ -1,7 +1,7 @@
 import sys
 import time
 import pprint
-from itertools import combination
+from itertools import combinations
 import numpy as np
 
 from Board import *
