@@ -1,4 +1,6 @@
 import numpy as np
+import random
+from Search import *
 
 """
 A function for generating a board from a user-specified file.
@@ -207,7 +209,7 @@ def generate_board_rubric(n, M):
     return board
 
 """
-
+Writes a board--ideally a solved board--to file for easier inspection.
 """
 def write_solution_to_file(solution_board):
     import os
@@ -217,3 +219,39 @@ def write_solution_to_file(solution_board):
                 solution_file.write(str(solution_board[i][j]) + " ")
             solution_file.write("\n")
 
+"""
+Selects a square from a board that is a legal starting position.
+(i.e., not an objective or an obstacle)
+"""
+def find_legal_starting_position(board):
+    legal_starts = zip(*np.where(board == 0))
+    return random.choice(legal_starts)
+
+
+"""
+Generates a guaranteed solvable rubric board
+"""
+def generate_solvable_board_rubric(n, M):
+    solvable = 0
+    while not solvable:
+        b = generate_board_rubric(n, M)
+        start = find_legal_starting_position(b)
+        goals = zip(*np.where(b == 2))
+        solutions = []
+        while goals:
+            try:
+                parent, cost_to_reach, goal = a_star_search(b, start, goals)
+                del goals[goals.index(goal)]
+                solutions.append((parent, cost_to_reach, start, goal))
+                start = goal
+            except TypeError:
+                break
+        
+        if not goals:
+            solvable = 1
+
+    return b
+
+    
+            
+    

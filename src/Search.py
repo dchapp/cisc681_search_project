@@ -66,7 +66,7 @@ def a_star_search(board, init_position, goal_positions):
             return parent, cost_to_reach, goal
 
     print "No solution possible"
-    exit()
+    #exit()
 
 
 def heuristic(position, goal):
