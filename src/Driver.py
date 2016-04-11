@@ -1,6 +1,7 @@
 import sys
 import time
-import pprint 
+import pprint
+from itertools import combination
 import numpy as np
 
 from Board import *
@@ -8,6 +9,63 @@ from SimpleGraph import *
 from BoardToGraph import *
 from Search import *
 
+
+def complete_path(start, solutions, goal_len):
+    paths = list(combinations(solutions, goal_len))
+    complete_paths = []
+    for path in paths:
+        complete = True
+        begin = start
+        visited = [begin]
+        begins = [x[2] for x in path]
+        ends = [x[3] for x in path]
+        if begin not in begins:
+            if begin not in ends:
+                continue
+        for i in range(goal_len):
+            if begin in begins:
+                j = begins.index(begin)
+                if path[j][3] in visited:
+                    complete = False
+                    break
+                visited.append(path[j][3])
+                begin = path[j][3]
+            elif begin in ends:
+                j = ends.index(begin)
+                if path[j][2] in visited:
+                    complete = False
+                    break
+                visited.append(path[j][2])
+                begin = path[j][2]
+        if complete:
+            complete_paths.append(path)
+
+    return complete_paths
+
+
+def combinatorial_a_star(board):
+    ### Generate board, starting position, and goal positions
+    start = find_legal_starting_position(board)
+    goals = zip(*np.where(board == 2))
+    goals.append(start)
+    pairs = list(combinations(goals, 2))
+    solutions = []
+    for pair in pairs:
+        parent, cost_to_reach, goal = a_star_search(board, pair[0], [pair[1]])
+        solutions.append((parent, cost_to_reach, pair[0], goal))
+
+    paths = complete_path(start, solutions, len(goals)-1)
+
+    min_cost = sys.maxint
+    min_path = None
+    for path in paths:
+        cost = [x[1][x[3]] for x in path]
+        cost = sum(cost)
+        if cost < min_cost:
+            min_cost = cost
+            min_path = path
+
+    return min_path
 
 def solve_multi_objective_board(board):
     ### Generate board, starting position, and goal positions
