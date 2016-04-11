@@ -16,6 +16,12 @@
 In this work we implement the A* search algorithm to solve the problem of directing a predator (e.g., a cat) through a maze of obstacles to multiple prey objectives (e.g., mice). 
 We introduce heuristics specifically tailored to this multi-objective pathfinding problem and provide an empirical evaluation of their performance. 
 
+\subsection{Problem Characterization}
+We are presented with the problem of providing a cat with a shortest path that allows it to navigate to and consume $m$ mice on an $n \times n$ board of tiles. 
+However, some of these tiles are obstacles that the cat cannot traverse, which makes computing shortest paths nontrivial.
+We employ the A* search algorithm to find, for a fixed starting tile and a fixed goal tile containing a mouse, a shortest path for the cat. 
+In turn, we use heuristics for executing repeated applications of single-objective A* search to find a shortest path to all of the mice. 
+
 
 \section{The A* Algorithm}
 
