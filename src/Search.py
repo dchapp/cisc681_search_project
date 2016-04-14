@@ -56,7 +56,7 @@ def a_star_search(board, init_position, goal_positions):
             n_cost = cost_to_reach[current] + 1
             if n not in cost_to_reach or n_cost < cost_to_reach[n]:
                 cost_to_reach[n] = n_cost
-                priority = n_cost + heuristic_a(n, goal_positions)
+                priority = n_cost + heuristic_b(n, goal_positions)
                 frontier.put(n, priority)
                 parent[n] = current
 
@@ -86,7 +86,7 @@ def heuristic_a(position, goals):
     return min_dist
 
 # Finds minimum euclidean distance to any goal
-def heuristic_b(position_x, position_y):
+def heuristic_b(position, goals):
     (x1, y1) = position
     min_dist = sys.maxint
     for goal in goals:
