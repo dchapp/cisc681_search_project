@@ -75,6 +75,7 @@ def heuristic(position, goal):
     return abs(x1 - x2) + abs(y1 - y2)
 
 
+# Finds minimum manhattan distance to any goal
 def heuristic_a(position, goals):
     (x1, y1) = position
     min_dist = sys.maxint
@@ -84,8 +85,15 @@ def heuristic_a(position, goals):
         min_dist = min(dist, min_dist)
     return min_dist
 
+# Finds minimum euclidean distance to any goal
 def heuristic_b(position_x, position_y):
-    return 0
+    (x1, y1) = position
+    min_dist = sys.maxint
+    for goal in goals:
+        (x2, y2) = goal
+        dist = ((x1 - x2)**2 + (y1 - y2)**2) ** 0.5
+        min_dist = min(dist, min_dist)
+    return min_dist
 
 
 def multiobjective_a_star_search(board, start, goal_list):
