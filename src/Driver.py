@@ -134,11 +134,11 @@ def main():
         parent, cost, start, goal = sub_soln
         total_cost += cost[goal]
         path.append(goal)
-        path.append(start)
         current = goal
         while parent[path[-1]] != start:
             path.append(parent[current])
             current = parent[current]
+        path.append(start)
 
     solution = np.array(b)
 
