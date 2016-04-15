@@ -70,9 +70,24 @@ Mke
 Mike
 
 \section{Implementation}
-Dylan 
+We implemented our core single-objective A* search algorithm, all helper functions for ingesting and reporting data, and all functions necessary to adapt the single-objective algorithm to the multi-objective problem posed in Python. 
+This choice was guided by the authors' familiarity with the language and the knowledge that we would be able to rapidly iterate on and test our design.
+With the exception of a few uses of the NumPy numerical computation module for convenience, the project is implemented without the use of 3rd-party modules. 
+
+\subsection{Components}
+Our implementation is composed of three primary components: board generation, the core single-objective solver and its heuristics, and a top-level driver program that invokes the single-objective solver according to its own set of heuristics to solve multi-objective boards. 
+
+In addition to the board specified in the project description, our implementation can read in an arbitrary board from a file or generate a broader class of randomized board from user-specified parameters. 
+The initial impetus for providing a more flexible board-generation procedure than that specified in the project description was to explore the effect of the distribution of obstacles on the board on runtime for a fixed board size.
+
+\subsection{Use}
+To use our implementation, first ensure that all dependencies are met as per the README available at \url{https://github.com/dchapp/cisc681_search_project} and then invoke the \texttt{Driver.py} program. 
+By default, the program will generate and solve a $20 \times 20$ board conforming to the problem statement's obstacle and objective frequencies.
+Also by default, the program will use a fixed choice of heuristic.
+However, the size of board, board-generation procedure, and choice of heuristic can all be given as arguments to the \texttt{Driver.py} program. 
 
 \section{Evaluation}
+There are two factors upon which we judge the quality of our implementation: runtime performance and optimality of the generated path.  
 
 \subsection{Runtime Performance}
 Dylan
