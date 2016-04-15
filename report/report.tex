@@ -5,6 +5,15 @@
 \usepackage{url}
 \usepackage{tikz}
 
+%%% Package and definitions for displaying pseudocode
+\usepackage[noend]{algpseudocode}
+\newcommand*\Let[2]{\State #1 $\gets$ #2}
+\algrenewcommand\alglinenumber[1]{
+    {\sf\footnotesize\addfontfeatures{Colour=888888,Numbers=Monospaced}#1}}
+\algrenewcommand\algorithmicrequire{\textbf{Precondition:}}
+\algrenewcommand\algorithmicensure{\textbf{Postcondition:}}
+
+
 \begin{document}
 \title{CISC-481/681 Project 2: A* Search with Heuristics}
 
@@ -27,7 +36,32 @@ We employ the A* search algorithm to find, for a fixed starting tile and a fixed
 In turn, we use heuristics for executing repeated applications of single-objective A* search to find a shortest path to all of the mice. 
 
 \section{The A* Algorithm}
-Dylan
+A* is an informed search algorithm used for finding the shortest path from a single node in a graph--the start--to some other node in the graph--the goal. 
+Specifically, A* constructs a tree whose root is the start node and one of which's leaves is the goal node. 
+
+The A* algorithm bears resemblance to uninformed search algorithms such as breadth-first search in terms of its general structure, but differs in that it maintains a priority queue of nodes to expand upon rather than a FIFO/LIFO queue. 
+The priority queue is ordered according to a heuristic that accounts for both the known cost to reach a node from the starting node and the estimated cost to reach the goal node from that node. 
+
+In fact, A* was developed as an improved upon Dijkstra's algorithm, a similiar search algorithm that too maintains a priority queue of nodes, but orders them only with respect to the known cost to reach them from the starting node. 
+Below, we provide pseudocode for A* highlighting the difference.
+
+\begin{algorithm}
+    \caption{A* Search}
+    \label{alg-astar}
+    \begin{algorithmic}[1]
+        \Statex
+        \Function{A*}{start, goal} 
+            \Let{explored}{\{\}}
+            \Let{frontier}{\{\}}
+            \While{}
+            
+            \EndWhile
+        \State \Return{0}
+        \EndFunction
+    \end{algorithmic}
+\end{algorithm}
+            
+            
 
 \subsection{Single Objective A* Heuristics}
 Mke
