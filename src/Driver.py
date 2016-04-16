@@ -14,30 +14,36 @@ from Heuristics import *
 
 def get_char(i):
     if i == 0:
-        return ' '
+        return '  '
     if i == 1:
-        return u'\u2588'
+        return u'\u2588'*2
     if i == 2:
-        return u'\U0001F42D'
+        return u'\U0001F42D'+' '
     if i == 3:
-        return u'\U0001F638'
+        return u'\U0001F638'+' '
     else:
-        return -i
+        return str(int(-i))+' '
 
 def print_board(board):
-    border = ''.join([u'\u2588' for i in range(len(board)+2)])
+    border = ''.join([u'\u2588'*2 for i in range(len(board)+2)])
     print border
     for row in board:
         row = [get_char(i) for i in row]
-        print u'\u2588' + '%s' % ''.join(row) + u'\u2588'
+        print u'\u2588'*2 + '%s' % ''.join(row) + u'\u2588'*2
     print border
 
 def print_solution_board(path, board):
-    print 'nah'
+    for vertex in path:
+        x, y = vertex
+        if board[x,y] <= 0:
+            board[x,y] -= 1
+    print_board(board)
 
 def print_solution_path(path):
+    print 'Path:',
     for vertex in path:
-        print vertex
+        print vertex,
+    print '\n'
 
 # Builds the list of vertices for the path, starting at the initial position
 def get_path(path, init_pos):
@@ -52,7 +58,6 @@ def get_path(path, init_pos):
 
         parent, cost, start, end = sub_path
         total_cost += cost[end]
-        print cost[end]
 
         tmp_vertices = [end]
         current = end
@@ -81,7 +86,7 @@ def scaling_test():
         print "Board size: " + str(s) + " Time to solve: " + str(t)
 
 
-if __name__ == '__main__':
+def main():
     parser = argparse.ArgumentParser()
     parser.add_argument('-b', '--bfile', type=str, required=False,
             default=False, help='file containing board')
@@ -120,7 +125,7 @@ if __name__ == '__main__':
     init_pos = find_legal_starting_position(board)
 
     # print the board for user inspection
-    p_board = board
+    p_board = np.array(board)
     p_board[init_pos[0], init_pos[1]] = 3
     print_board(p_board)
 
@@ -134,7 +139,7 @@ if __name__ == '__main__':
     print_solution_path(path)
 
     # Print the board with solution overlay
-    print_solution_board(path, board)
+    print_solution_board(path, p_board)
 
 
     print 'The path length is: %d' % cost
@@ -197,3 +202,6 @@ if __name__ == '__main__':
     g = Graph(connections, directed=True)
     pp.pprint(g._graph)
     """
+    return 0
+
+main()
