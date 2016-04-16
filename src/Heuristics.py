@@ -1,6 +1,7 @@
 import sys
 
 # Finds minimum manhattan distance to any goal
+# Input is current node position and list of goal positions
 def heuristic_manhattan(position, goals):
     (x1, y1) = position
     min_dist = sys.maxint
@@ -11,6 +12,7 @@ def heuristic_manhattan(position, goals):
     return min_dist
 
 # Finds minimum euclidean distance to any goal
+# Input is current node position and list of goal positions
 def heuristic_euclidean(position, goals):
     (x1, y1) = position
     min_dist = sys.maxint

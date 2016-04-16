@@ -1,7 +1,5 @@
 import sys
 import time
-import pprint
-from itertools import combinations
 import numpy as np
 import argparse
 
@@ -11,69 +9,8 @@ from BoardToGraph import *
 from Search import *
 from MultiobjectiveSearch import *
 from Heuristics import *
+from Printing import *
 
-def get_char(i):
-    if i == 0:
-        return '  '
-    if i == 1:
-        return u'\u2588'*2
-    if i == 2:
-        return u'\U0001F42D'+' '
-    if i == 3:
-        return u'\U0001F638'+' '
-    else:
-        return str(int(-i))+' '
-
-def print_board(board):
-    border = ''.join([u'\u2588'*2 for i in range(len(board)+2)])
-    print border
-    for row in board:
-        row = [get_char(i) for i in row]
-        print u'\u2588'*2 + '%s' % ''.join(row) + u'\u2588'*2
-    print border
-
-def print_solution_board(path, board):
-    for vertex in path:
-        x, y = vertex
-        if board[x,y] <= 0:
-            board[x,y] -= 1
-    print_board(board)
-
-def print_solution_path(path):
-    print 'Path:',
-    for vertex in path:
-        print vertex,
-    print '\n'
-
-# Builds the list of vertices for the path, starting at the initial position
-def get_path(path, init_pos):
-    path_vertices = []
-    total_cost = 0
-
-    while path:
-        # Find the subpath
-        sub_index = [init_pos in x for x in path].index(True)
-        sub_path = path[sub_index]
-        del path[sub_index]
-
-        parent, cost, start, end = sub_path
-        total_cost += cost[end]
-
-        tmp_vertices = [end]
-        current = end
-        while parent[tmp_vertices[-1]] != start:
-            tmp_vertices.append(parent[current])
-            current = parent[current]
-
-        if start != init_pos:
-            init_pos = start
-        else:
-            tmp_vertices.reverse()
-            init_pos = end
-
-        path_vertices += tmp_vertices
-
-    return path_vertices, total_cost
 
 def scaling_test():
     board_sizes = range(10, 100)
@@ -136,72 +73,13 @@ def main():
     path, cost = get_path(path, init_pos)
 
     # Print the vertices which form solution path
-    print_solution_path(path)
+    print_solution_path(path, p_board)
 
     # Print the board with solution overlay
     print_solution_board(path, p_board)
 
-
     print 'The path length is: %d' % cost
 
-    #for row in solution_board:
-    #   : print row
-
-
-    #write_solution_to_file(solution_board)
-
-
-    """
-    M = int(sys.argv[1])
-    N = int(sys.argv[2])
-    X = int(sys.argv[3])
-    Y = int(sys.argv[4])
-
-    good_file_1 = sys.argv[5]
-    good_file_2 = sys.argv[6]
-    bad_file_1  = sys.argv[7]
-
-    print "Testing board-generation from fixed parameters:\n"
-    b = generate_board_fixed(M, N, X, Y)
-    print b
-    print type(b)
-
-    print "Testing board-generation from one properly formatted file:\n"
-    b = generate_board_from_file(good_file_1)
-    print b
-    print type(b)
-    
-    print "Testing board-generation from another properly formatted file:\n"
-    b = generate_board_from_file(good_file_2)
-    print b
-    print type(b)
-    """
-    
-    """
-    print "Testing board-generation from improperly formatted file:\n"
-    b = generate_board_from_file(bad_file_1)
-    print b
-    print type(b)
-    """
-
-    """
-    print "Testing graph data structure implementation."
-    pp = pprint.PrettyPrinter(indent=4)
-    connections = [('A', 'B'), ('B', 'C'), ('B', 'D'), ('C', 'D'), ('E', 'F'), ('F', 'C')]
-    g = Graph(connections, directed=True)
-    pp.pprint(g._graph) 
-
-    print "Testing graph data structure implementation with object nodes."
-    node_A = Node("A")
-    node_B = Node("B")
-    node_C = Node("C")
-    node_D = Node("D")
-    node_E = Node("E")
-    node_F = Node("F")
-    connections = [(node_A, node_B), (node_B, node_C), (node_B, node_D), (node_C, node_D), (node_E, node_F), (node_F, node_C)]
-    g = Graph(connections, directed=True)
-    pp.pprint(g._graph)
-    """
     return 0
 
 main()
