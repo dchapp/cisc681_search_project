@@ -3,95 +3,72 @@ import time
 import pprint
 from itertools import combinations
 import numpy as np
+import argparse
 
 from Board import *
 from SimpleGraph import *
 from BoardToGraph import *
 from Search import *
+from MultiobjectiveSearch import *
+from Heuristics import *
 
+def get_char(i):
+    if i == 0:
+        return ' '
+    if i == 1:
+        return u'\u2588'
+    if i == 2:
+        return u'\U0001F42D'
+    if i == 3:
+        return u'\U0001F638'
+    else:
+        return -i
 
-# Makes every combination of subpaths
-# Then returns only paths which are "complete" (visit all goals and start node)
-def complete_path(start, solutions, path_num):
-    paths = list(combinations(solutions, path_num))
-    complete_paths = []
-    for path in paths:
-        begin = start
-        visited = [begin]
-        begins = [x[2] for x in path]
-        ends = [x[3] for x in path]
-        if begin not in begins:
-            if begin not in ends:
-                continue
-        for i in range(path_num):
-            if begin in begins:
-                j = begins.index(begin)
-                visited.append(ends[j])
-                begin = ends[j]
-                del ends[j]
-                del begins[j]
-            elif begin in ends:
-                j = ends.index(begin)
-                visited.append(begins[j])
-                begin = begins[j]
-                del ends[j]
-                del begins[j]
-            else:
-                break
-        if len(set(visited)) == path_num+1:
-            complete_paths.append(path)
+def print_board(board):
+    border = ''.join([u'\u2588' for i in range(len(board)+2)])
+    print border
+    for row in board:
+        row = [get_char(i) for i in row]
+        print u'\u2588' + '%s' % ''.join(row) + u'\u2588'
+    print border
 
-    return complete_paths
+def print_solution_board(path, board):
+    print 'nah'
 
+def print_solution_path(path):
+    for vertex in path:
+        print vertex
 
-def combinatorial_a_star(board, init_pos):
-    ### Generate board, starting position, and goal positions
-    #start = find_legal_starting_position(board)
-    start = init_pos
-    goals = zip(*np.where(board == 2))
-    goals.append(start)
-    pairs = list(combinations(goals, 2))
-    solutions = []
-    for pair in pairs:
-        begin, end = pair
-        parent, cost_to_reach, goal = a_star_search(board, begin, [end])
-        solutions.append((parent, cost_to_reach, begin, end))
+# Builds the list of vertices for the path, starting at the initial position
+def get_path(path, init_pos):
+    path_vertices = []
+    total_cost = 0
 
-    paths = complete_path(start, solutions, len(goals)-1)
+    while path:
+        # Find the subpath
+        sub_index = [init_pos in x for x in path].index(True)
+        sub_path = path[sub_index]
+        del path[sub_index]
 
-    min_cost = sys.maxint
-    min_path = None
-    for path in paths:
-        cost = [x[1][x[3]] for x in path]
-        cost = sum(cost)
-        if cost < min_cost:
-            min_cost = cost
-            min_path = path
+        parent, cost, start, end = sub_path
+        total_cost += cost[end]
+        print cost[end]
 
-    return min_path
+        tmp_vertices = [end]
+        current = end
+        while parent[tmp_vertices[-1]] != start:
+            tmp_vertices.append(parent[current])
+            current = parent[current]
 
-def solve_multi_objective_board(board, init_pos):
-    ### Generate board, starting position, and goal positions
-    g = board_to_graph(board)
-    #start = find_legal_starting_position(board)
-    start = init_pos
-    goals = zip(*np.where(board == 2))
-    solutions = []
+        if start != init_pos:
+            init_pos = start
+        else:
+            tmp_vertices.reverse()
+            init_pos = end
 
-    ### Solve board
-    start_time = time.time()
-    while goals:
-        parent, cost_to_reach, goal = a_star_search(board, start, goals)
-        print goal
-        del goals[goals.index(goal)] # Remove found goal
-        solutions.append((parent, cost_to_reach, start, goal))
-        start = goal # Make found goal starting position
+        path_vertices += tmp_vertices
 
-    #end_time = time.time()
-    #return end_time - start_time
-    return solutions
-
-
+    return path_vertices, total_cost
 
 def scaling_test():
     board_sizes = range(10, 100)
@@ -104,64 +81,66 @@ def scaling_test():
         print "Board size: " + str(s) + " Time to solve: " + str(t)
 
 
+if __name__ == '__main__':
+    parser = argparse.ArgumentParser()
+    parser.add_argument('-b', '--bfile', type=str, required=False,
+            default=False, help='file containing board')
+    parser.add_argument('-o', '--multiheuristic', type=str, required=False,
+            default='nn', choices=['nn', 'mst'], help='''desire multiobjective
+            heuristic to use with A*.  Valid inputs are "nn" and "mst", which
+            are "nearest neighbor" and "minimum spanning tree",
+            respectively''')
+    parser.add_argument('-hr', '--heuristic', type=str, required=False,
+            default='manhattan', choices=['manhattan', 'euclidean'],
+            help='''Heuristic to use with single objective A*.  Valid inputs
+            are "manhattan" and "euclidean"''')
+    parser.add_argument('-m', '--mice', type=int, required=False,
+            default=5, help='number of mice to place on board')
+    parser.add_argument('-n', '--size', type=int, required=False,
+            default=10, help='size of the board: nxn')
+    args = parser.parse_args()
 
-def main():
+    # Generate Board
+    if args.bfile:
+        board = generate_board_from_file(args.bfile)
+    else:
+        board = generate_board_rubric(args.size, args.mice)
 
-    #scaling_test()
+    # Get appropriate heuristics for multiobjective and single objective A*
+    if args.multiheuristic == 'nn':
+        solver = nearest_neighbor_a_star
+    if args.multiheuristic == 'mst':
+        solver = combinatorial_a_star
+    if args.heuristic == 'manhattan':
+        heuristic = heuristic_manhattan
+    if args.heuristic == 'euclidean':
+        heuristic = heuristic_euclidean
 
-    board_file = sys.argv[1]
-    init_pos = (0,0)
-    b = generate_board_from_file(board_file)
-    print b
-    #g = board_to_graph(b)
-    #print g.edges
-    #init_pos = (0, 0)
-    #start = init_pos
-    #goals = zip(*np.where(b == 2))
-    #solutions = []
-    #while goals:
-    #    parent, cost_to_reach, goal = a_star_search(b, start, goals)
-    #    del goals[goals.index(goal)] # Remove found goal
-    #    solutions.append((parent, cost_to_reach, start, goal))
-    #    start = goal # Make found goal starting position
+    # find valid starting position on the board
+    init_pos = find_legal_starting_position(board)
 
-    #solutions = solve_multi_objective_board(b, init_pos)
-    solutions = combinatorial_a_star(b, init_pos)
+    # print the board for user inspection
+    p_board = board
+    p_board[init_pos[0], init_pos[1]] = 3
+    print_board(p_board)
 
-    path = []
-    total_cost = 0
-    for sub_soln in solutions:
-        parent, cost, start, goal = sub_soln
-        total_cost += cost[goal]
-        path.append(goal)
-        current = goal
-        while parent[path[-1]] != start:
-            path.append(parent[current])
-            current = parent[current]
-        path.append(start)
+    # Solve the board with chosen heuristics
+    path = solver(board, init_pos, heuristic)
 
-    solution = np.array(b)
+    # Extract the path of (x,y) positions
+    path, cost = get_path(path, init_pos)
 
-    solution_board = []
-    for i in xrange(len(solution)):
-        solution_board.append(solution[i][:])
+    # Print the vertices which form solution path
+    print_solution_path(path)
 
-    solution_board = [ list(x) for x in solution_board ]
-    solution_board = [ [str(int(y)) for y in x] for x in solution_board ]
+    # Print the board with solution overlay
+    print_solution_board(path, board)
 
 
-    for p in path:
-        x = p[0]
-        y = p[1]
-        solution_board[x][y] = "#"
-
-    for row in solution_board:
-        print '[%s]' % ' '.join(map(str, row))
-
-    print 'The path length is: %d' % total_cost
+    print 'The path length is: %d' % cost
 
     #for row in solution_board:
-    #    print row
+    #   : print row
 
 
     #write_solution_to_file(solution_board)
@@ -218,10 +197,3 @@ def main():
     g = Graph(connections, directed=True)
     pp.pprint(g._graph)
     """
-
-
-
-    return 0
-
-
-main()

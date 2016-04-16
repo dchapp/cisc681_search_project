@@ -3,8 +3,6 @@ from Queue import PriorityQueue
 from SimpleGraph import *
 from BoardToGraph import *
 
-import sys
-
 """
 Implementation of A* search algorithm. 
 Requires:
@@ -15,19 +13,9 @@ Returns:
     - parent = a dictionary whose keys are positions and whose values are the positions that lead to the key positions
     - cost_to_reach = a dictionary whose keys are position and whose values are the cost to get to that position
 """
-def a_star_search(board, init_position, goal_positions):
-    ### Unpack
-    #init_row = init_position[0]
-    #init_col = init_position[1]
-    #goal_row = goal_position[0]
-    #goal_col = goal_position[1]
-    #board_dims = (len(board), len(board[0]))
-
+def a_star_search(board, init_position, goal_positions, heuristic):
     ### Convert board to graph
     g = board_to_graph(board)
-
-    ### Initially the explored set is empty
-    #explored = []
 
     ### Initially the frontier consists only of the initial node
     frontier = PriorityQueue()
@@ -51,12 +39,10 @@ def a_star_search(board, init_position, goal_positions):
 
         ### Expand the frontier
         for n in g.neighbors(current):
-            ### Right? Since n is adjacent to current the cost to reach n is 1 more than cost
-            ### to reach current?
             n_cost = cost_to_reach[current] + 1
             if n not in cost_to_reach or n_cost < cost_to_reach[n]:
                 cost_to_reach[n] = n_cost
-                priority = n_cost + heuristic_b(n, goal_positions)
+                priority = n_cost + heuristic(n, goal_positions)
                 frontier.put(n, priority)
                 parent[n] = current
 
@@ -66,35 +52,4 @@ def a_star_search(board, init_position, goal_positions):
             return parent, cost_to_reach, goal
 
     print "No solution possible"
-    #exit()
-
-
-def heuristic(position, goal):
-    (x1, y1) = position
-    (x2, y2) = goal
-    return abs(x1 - x2) + abs(y1 - y2)
-
-
-# Finds minimum manhattan distance to any goal
-def heuristic_a(position, goals):
-    (x1, y1) = position
-    min_dist = sys.maxint
-    for goal in goals:
-        (x2, y2) = goal
-        dist = abs(x1 - x2) + abs (y1 - y2)
-        min_dist = min(dist, min_dist)
-    return min_dist
-
-# Finds minimum euclidean distance to any goal
-def heuristic_b(position, goals):
-    (x1, y1) = position
-    min_dist = sys.maxint
-    for goal in goals:
-        (x2, y2) = goal
-        dist = ((x1 - x2)**2 + (y1 - y2)**2) ** 0.5
-        min_dist = min(dist, min_dist)
-    return min_dist
-
-
-def multiobjective_a_star_search(board, start, goal_list):
-    return 0
+    exit()
