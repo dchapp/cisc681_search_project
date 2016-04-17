@@ -36,14 +36,15 @@ def print_solution_path(path, board):
         x,y=vertex
         if board[x,y] == 3:
             print 'c'+str(vertex)+',',
-        if board[x,y] == 2:
+        elif board[x,y] == 2:
             print 'm'+str(vertex)+',',
-        print str(vertex)+',',
+        else:
+            print str(vertex)+',',
     print '\n'
 
 # Builds the list of vertices for the path, starting at the initial position
 def get_path(path, init_pos):
-    path_vertices = []
+    path_vertices = [init_pos]
     total_cost = 0
 
     while path:
@@ -67,8 +68,14 @@ def get_path(path, init_pos):
         # This is necessary for the combinatorial solution finder because it
         # does not always make the cat the starting point of the first subpath
         if start != init_pos:
+            # Account for reversed subpaths - Don't want end to be added twice
+            # and start position not be added
+            tmp_vertices.append(init_pos)
+            del tmp_vertices[0]
             init_pos = start
         else:
+            # Next 2 lines of code are to account for the combinatorial version
+            # of the code being able to alternate direction of subpath
             tmp_vertices.reverse()
             init_pos = end
 
