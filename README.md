@@ -15,8 +15,9 @@ numpy
 
 ### Usage
 ./src/Driver.py will run the algorithm with default settings:
-
+```
 $python ./src/Driver.py
+```
 
 Several options can be specified regarding board generation and herustics:
 
@@ -32,8 +33,9 @@ The program may also be run with one of several pre-defined boards found in ./te
 -b: board file to load
 
 Running the algorithm with options:
-
+```
 $ python ./src/Driver.py -o msp -hr euclidean -ix 0 -iy 0 -b ./test/multiple_obstacles_3.txt
+```
 
 ### Output
 The program will output the following:
@@ -44,6 +46,7 @@ The program will output the following:
 - Total path cost
 
 Example output:
+```
 $ python ./src/Driver.py
 ████████████████████████
 ████    😸             ██
@@ -72,3 +75,4 @@ Path: c(0, 3), (0, 4), (0, 5), (0, 6), (0, 7), (0, 8), m(1, 8), (1, 7), m(2, 7),
 ██  ████      ████  ████
 ████████████████████████
 The path length is: 33
+```
