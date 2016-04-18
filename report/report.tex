@@ -264,8 +264,7 @@ of references to positions of the board--e.g., for enumerating neighbors of a sq
 we generate a graph representation of the board prior to path-finding. Not only does 
 this lead to a cleaner implementation of the core algorithm, but it also allows the 
 solver to generalize to boards of dimension than 2, simply by redefining the helper 
-function for enumerating neighbors. The single-objective solver also takes as input
-a function handle for the heuristic, further easing testing and providing extensibility. 
+function for enumerating neighbors. 
 
 \subsection{Use}
 To use our implementation, first ensure that all dependencies are met as per
