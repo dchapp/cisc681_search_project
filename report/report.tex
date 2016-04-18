@@ -62,19 +62,16 @@ Below, we provide pseudocode for A* highlighting the difference.
                 \State $current \gets \text{frontier.pop()}$
                 \If{current == goal}
                     \State{break}
-                \Else \State{
+                \Else
                         \For{$n \in current.neighbors()$}
                         \State $\text{cost} \gets \text{costToReach[current]} + 1$
-                        \State {
                             \If {$n \notin \text{costToReach}$ or \\ cost $<$ costToReach[n]}
                                 \State costToReach[n] = cost
                                 \State $p = \text{cost} + h(\text{goal}, n)$
                                 \State frontier.insert($n$, $p$)
             `                   \State parent[n] = current
                             \EndIf
-                        }
                         \EndFor
-                    }
                 \EndIf
             \EndWhile
         \State \Return{parent, costToReach}
@@ -227,7 +224,7 @@ Consequently, we report the mean and standard deviation of the runtimes for each
 \end{figure}
 
 \subsection{Optimality}
-Mike
+
 
 \section{Future Work}
 Mike
