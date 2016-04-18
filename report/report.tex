@@ -46,21 +46,41 @@ The priority queue is ordered according to a heuristic that accounts for both th
 In fact, A* was developed as an improved upon Dijkstra's algorithm, a similiar search algorithm that too maintains a priority queue of nodes, but orders them only with respect to the known cost to reach them from the starting node. 
 Below, we provide pseudocode for A* highlighting the difference.
 
-%\begin{algorithm}
-%    \caption{A* Search}
-%    \label{alg-astar}
-%    \begin{algorithmic}[1]
-%        \Statex
-%        \Function{A*}{start, goal} 
-%            \Let{explored}{\{\}}
-%            \Let{frontier}{\{\}}
-%            \While{}
-%            
-%            \EndWhile
-%        \State \Return{0}
-%        \EndFunction
-%    \end{algorithmic}
-%\end{algorithm}
+\begin{algorithm}
+    \caption{A* Search}
+    \label{alg-astar}
+    \begin{algorithmic}[1]
+        \Function{A*}{start, goal, $h$}
+            \State $\text{explored} \gets \{\}$
+            \State $\text{frontier} \gets \text{PriorityQueue()}$
+            \State $\text{frontier.insert(start, 0)}$
+            \State $\text{costToReach} \gets \text{HashMap()}$
+            \State $\text{parent} \gets \text{HashMap()}$
+            \State $\text{costToReach}[\text{start}] = 0$
+            \State $\text{parent}[\text{start}] = Nil$
+            \While{frontier not empty}
+                \State $current \gets \text{frontier.pop()}$
+                \If{current == goal}
+                    \State{break}
+                \Else \State{
+                        \For{$n \in current.neighbors()$}
+                        \State $\text{cost} \gets \text{costToReach[current]} + 1$
+                        \State {
+                            \If {$n \notin \text{costToReach}$ or \\ cost $<$ costToReach[n]}
+                                \State costToReach[n] = cost
+                                \State $p = \text{cost} + h(\text{goal}, n)$
+                                \State frontier.insert($n$, $p$)
+            `                   \State parent[n] = current
+                            \EndIf
+                        }
+                        \EndFor
+                    }
+                \EndIf
+            \EndWhile
+        \State \Return{parent, costToReach}
+        \EndFunction
+    \end{algorithmic}
+\end{algorithm}
 
 \subsection{Single Objective A* Heuristics}
 We developed two valid heuristics for A*.  Both are valid because they
