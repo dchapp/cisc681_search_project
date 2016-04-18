@@ -4,6 +4,7 @@
 \usepackage{graphicx}
 \usepackage{url}
 \usepackage{tikz}
+\usepackage{color, soul}
 
 %%% Package and definitions for displaying pseudocode
 \usepackage{algorithm}
@@ -45,6 +46,7 @@ The priority queue is ordered according to a heuristic that accounts for both th
 
 In fact, A* was developed as an improved upon Dijkstra's algorithm, a similiar search algorithm that too maintains a priority queue of nodes, but orders them only with respect to the known cost to reach them from the starting node. 
 Below, we provide pseudocode for A* highlighting the difference.
+Note that the $h$ argument indicates the handle of the particular heuristic function being used. 
 
 \begin{algorithm}
     \caption{A* Search}
@@ -67,7 +69,7 @@ Below, we provide pseudocode for A* highlighting the difference.
                         \State $\text{cost} \gets \text{costToReach[current]} + 1$
                             \If {$n \notin \text{costToReach}$ or \\ cost $<$ costToReach[n]}
                                 \State costToReach[n] = cost
-                                \State $p = \text{cost} + h(\text{goal}, n)$
+                                \State \hl{$p = \text{cost} + h(\text{goal}, n)$}
                                 \State frontier.insert($n$, $p$)
             `                   \State parent[n] = current
                             \EndIf
@@ -222,6 +224,21 @@ Consequently, we report the mean and standard deviation of the runtimes for each
     \caption{Standard deviation of runtimes for variable-width boards with a fixed number of objectives}
     \label{variability-fig}
 \end{figure}
+
+The time complexity of the single-objective A* algorithm is $O(b^d)$ where $d$ is the dep
+th of the optimal path to the nearest goal and $b$ is the average branching factor.
+In practice, we assume $b = 3$ since for any node, there are three neighbors that can be
+expanded.
+For the multi-objective procedures that invoke single-objective A*, the nearest-neighbor
+strategy has time complexity $O(g)$ and the minimum spanning-tree strategy has time compl
+exity $O(g^2)$ where $g$ is the number of goals and we assume an average constant cost of
+ calls to single-objective A* by amortizing over the goals.
+
+We observe agreement between the empirical runtime data and the expected theoretical perf
+ormance of the algorithms-heuristic combinations.
+However, in future work we would like to explore larger boards and vary the number of obj
+ectives to put this claim on firmer footing.
+
 
 \subsection{Optimality}
 The A* algorithm is guarunteed to return the shortest path from a start to end
