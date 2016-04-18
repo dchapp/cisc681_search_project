@@ -159,11 +159,11 @@ algorithm~\ref{euclidean}.
     \end{algorithmic}
 \end{algorithm}
 
-\subsection{Multi Objective A* Heuristics}
+\subsection{Multi-Objective A* Heuristics}
 The A* algorithm and associated heuristics described thus far are able to
 handle multiple objectives, but will only find the path between a starting
 point and the nearest goal. If we want to contruct the path from a starting
-point to all goals, we need a heuristic for utilizing our single objective A*
+point to all goals, we need a heuristic for utilizing our single-objective A*
 implementation.  To achieve a path from the starting point through all goals,
 we implemented two different multi-objective heuristics.
 
@@ -282,7 +282,7 @@ There are two factors upon which we judge the quality of our implementation:
 runtime performance and optimality of the generated path
 
 \subsection{Runtime Performance}
-Each combination of a single-objective heuristic and a multiobjective
+Each combination of a single-objective heuristic and a multi-objective
 heuristic--e.g., the Manhattan distance single-objective heuristic and the
 nearest-neighbor multi-objective heuristic--is executed 20 times on boards of
 increasing size for a fixed number of objectives.  In initial testing we
