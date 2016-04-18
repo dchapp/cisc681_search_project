@@ -45,21 +45,21 @@ The priority queue is ordered according to a heuristic that accounts for both th
 In fact, A* was developed as an improved upon Dijkstra's algorithm, a similiar search algorithm that too maintains a priority queue of nodes, but orders them only with respect to the known cost to reach them from the starting node. 
 Below, we provide pseudocode for A* highlighting the difference.
 
-\begin{algorithm}
-    \caption{A* Search}
-    \label{alg-astar}
-    \begin{algorithmic}[1]
-        \Statex
-        \Function{A*}{start, goal} 
-            \Let{explored}{\{\}}
-            \Let{frontier}{\{\}}
-            \While{}
-            
-            \EndWhile
-        \State \Return{0}
-        \EndFunction
-    \end{algorithmic}
-\end{algorithm}
+%\begin{algorithm}
+%    \caption{A* Search}
+%    \label{alg-astar}
+%    \begin{algorithmic}[1]
+%        \Statex
+%        \Function{A*}{start, goal} 
+%            \Let{explored}{\{\}}
+%            \Let{frontier}{\{\}}
+%            \While{}
+%            
+%            \EndWhile
+%        \State \Return{0}
+%        \EndFunction
+%    \end{algorithmic}
+%\end{algorithm}
             
             
 
@@ -94,8 +94,19 @@ Each combination of a single-objective heuristic and a multiobjective heuristic-
 In initial testing we observed large variation in runtime due to differences in obstacle layout on the randomly generated boards. 
 Consequently, we report the mean and standard deviation of the runtimes for each heuristic combination. 
 
+\begin{figure}[h!]
+    \centering
+    \includegraphics[width=0.45\textwidth]{runtimes.png}
+    \caption{Mean of runtimes for variable-width boards with a fixed number of objectives}
+    \label{runtimes-fig}
+\end{figure}
 
-
+\begin{figure}[h!]
+    \centering
+    \includegraphics[width=0.45\textwidth]{variability.png}
+    \caption{Standard deviation of runtimes for variable-width boards with a fixed number of objectives}
+    \label{variability-fig}
+\end{figure}
 
 \subsection{Optimality}
 Mike
