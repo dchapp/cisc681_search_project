@@ -64,30 +64,107 @@ Below, we provide pseudocode for A* highlighting the difference.
 
 \subsection{Single Objective A* Heuristics}
 We developed two valid heuristics for A*.  Both are valid because they
-consistently underestimate the actual cost from a position to a goal node.  The
-first heuristic calculates the manhattan distance between a position and a goal
-node.  The second heuristic calculates the euclidean distance between the two
-points.  If there is more than one goal, the heuristics will calculate the
-distance to each goal and return the distance to the nearest goal.  Pseudocode
-for each heurstic can be found below.
+consistently underestimate the real cost of reaching a goal node from a given
+start position.  Each heuristic is able to handle cases when there are multiple
+goals.  The heuristics will help guide A* to the nearest goal on the board by
+returning the minimum estimated distance between a start position and any goal.
+The first heuristic calculates the manhattan distance between a position and
+goals.  The manhattan distance is the number of moves up, down, left, or right
+that the cat must make to reach a goal.  If there are no obstacles present, it
+is also an exact solution for the cost to a given goal.  The psuedocode for
+this heuristic can be seen in algorithm~\ref{manhattan}.
+
 \begin{algorithm}
     \caption{Manhattan distance heuristic}
     \label{manhattan}
     \begin{algorithmic}[1]
         \Procedure{Manhattan}{start, goals}
         \State $minDist\gets \infty$
-        \State $(x1, y1)\gets start$
+        \State $(x_1, y_1)\gets start$
         \For{each point $goal$ in $goals$}
-        \State $(x2, y2)\gets goal$
-        \State $dist\gets \lvert x2-x1\rvert + \lvert y2-y1\rvert$
+        \State $(x_2, y_2)\gets goal$
+        \State $dist\gets \lvert x_2-x_1\rvert + \lvert y_2-y_1\rvert$
         \State $minDist\gets min(dist, minDist)$
         \EndFor
         \Return $minDist$
         \EndProcedure
     \end{algorithmic}
 \end{algorithm}
+
+The second heuristic calculates the euclidean distance between a start position
+and goals.  The euclidean distance is the straight-line distance between any
+two points.  This heuristic will always underestimate the distance to a
+goal for this problem.  Pseudocode for the euclidean distance can be seen in
+algorithm~\ref{euclidean}.
+
+\begin{algorithm}
+    \caption{Euclidean distance heuristic}
+    \label{euclidean}
+    \begin{algorithmic}[1]
+        \Procedure{Euclidean}{start, goals}
+        \State $minDist\gets \infty$
+        \State $(x_1, y_1)\gets start$
+        \For{each point $goal$ in $goals$}
+        \State $(x_2, y_2)\gets goal$
+        \State $dist\gets \sqrt{(x_2-x_1)^2+(y_2-y_1)^2}$
+        \State $minDist\gets min(dist, minDist)$
+        \EndFor
+        \Return $minDist$
+        \EndProcedure
+    \end{algorithmic}
+\end{algorithm}
+
 \subsection{Multi Objective A* Heuristics}
-Mike
+The A* algorithm and associated heuristics described thus far are able to
+handle multiple objectives, but will only find the path between a starting
+point and the nearest goal. If we want to contruct the path from a start path
+to all goals, we need a heuristic for utilizing our single objective A*
+implementation.  To achieve a path from the starting point through all goals,
+we implemented two different multi-objective heuristics.
+
+The first heuristic is a na\"{\i}ve implementation of multi-objective A*.  A
+path to all goals is built by finding the subpath between a start point and the
+nearest goal.  This is accomlished through iterative calls to the A* algorithm
+while changing the start position.  Psuedocode for this multi-objective
+heuristic can be found in algorithm~\ref{nna}.
+
+\begin{algorithm}
+    \caption{Na\"{\i}ve multi-objective A*}
+    \label{nna}
+    \begin{algorithmic}[1]
+        \Procedure{NearestGoalAStar}{start, goals}
+        \State $path\gets []$
+        \While{$goals$ not empty}
+        \State $goal, subPath\gets AStar(start, goals)$
+        \State add $subPath$ to $path$
+        \State $start\gets goal$
+        \State remove $goal$ from $goals$
+        \EndWhile
+        \Return $path$
+        \EndProcedure
+    \end{algorithmic}
+\end{algorithm}
+
+The second heuristic works by exhaustively searching all possible paths and
+returning the path which touches each goal and has the lowest cost.  This path
+can thought of as a Minimum Spanning Tree (MST) for the start and goals.  The
+algorithm first builds a library of all possible subpaths between any two
+points in the set of start and goal positions.  Using this library, it then
+builds all possible paths of an appropriate length ($len(goals)-1$).  The
+algorithm then removes any path which does not visit all goals and the start
+position (i.e., a complete path.)  A path cost for each of these paths is then
+computed and the path with the minimum cost is returned.  Pseudocode for this
+multi-objective heuristic can be found in algorithm~\ref{ca}.
+
+\begin{algorithm}
+    \caption{Combinatorial multi-objective A*}
+    \label{ca}
+    \begin{algorithmic}[1]
+        \Procedure{CombinatorialAStar}{start, goals}
+        \Return $path$
+        \EndProcedure
+    \end{algorithmic}
+\end{algorithm}
 
 \section{Implementation}
 We implemented our core single-objective A* search algorithm, all helper functions for ingesting and reporting data, and all functions necessary to adapt the single-objective algorithm to the multi-objective problem posed in Python. 
