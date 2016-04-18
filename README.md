@@ -21,12 +21,12 @@ $python ./src/Driver.py
 
 Several options can be specified regarding board generation and herustics:
 
--o: Desired multi-objective heuristic.  Valid options are 'nn' and 'msp'
--hr: Desired single-object heuristic.  Valid options are 'manhattan' and 'euclidean'
--m: number of mice to place on a board
--n: size of the board
--ix: location of the cat on the x axis
--iy: location of the cat on the y axis
+- o: Desired multi-objective heuristic.  Valid options are 'nn' and 'msp'
+- hr: Desired single-object heuristic.  Valid options are 'manhattan' and 'euclidean'
+- m: number of mice to place on a board
+- n: size of the board
+- ix: location of the cat on the x axis
+- iy: location of the cat on the y axis
 
 The program may also be run with one of several pre-defined boards found in ./test/:
 
