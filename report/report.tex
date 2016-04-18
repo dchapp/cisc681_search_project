@@ -70,9 +70,9 @@ estimated cost to reach the goal node from that node.
 In fact, A* was developed as an improved upon Dijkstra's algorithm, a similiar
 search algorithm that too maintains a priority queue of nodes, but orders them
 only with respect to the known cost to reach them from the starting node.
-Below, we provide pseudocode for A* highlighting the difference.  Note that the
-$h$ argument indicates the handle of the particular heuristic function being
-used.
+Below,~\ref{alg-astar} we provide pseudocode for A*, highlighting how A* uses 
+the the path cost, which is used in Dijkstra's algorithm, \emph{and} a heuristic 
+function $h$ to prioritize nodes in the frontier. 
 
 \begin{algorithm}
     \caption{A* Search}
@@ -97,7 +97,7 @@ used.
                                 \State costToReach[n] = cost
                                 \State \hl{$p = \text{cost} + h(\text{goal}, n)$}
                                 \State frontier.insert($n$, $p$)
-            `                   \State parent[n] = current
+                                \State parent[n] = current
                             \EndIf
                         \EndFor
                 \EndIf
@@ -258,13 +258,23 @@ for providing a more flexible board-generation procedure than that specified in
 the project description was to explore the effect of the distribution of
 obstacles on the board on runtime for a fixed board size.
 
+The single-objective solver essentially implements A* as specified by the pseudocode
+listed above. Though it would be possible to implement the algorithm purely in terms
+of references to positions of the board--e.g., for enumerating neighbors of a square--
+we generate a graph representation of the board prior to path-finding. Not only does 
+this lead to a cleaner implementation of the core algorithm, but it also allows the 
+solver to generalize to boards of dimension than 2, simply by redefining the helper 
+function for enumerating neighbors. The single-objective solver also takes as input
+a function handle for the heuristic, further easing testing and providing extensibility. 
+
 \subsection{Use}
 To use our implementation, first ensure that all dependencies are met as per
 the README available at \url{https://github.com/dchapp/cisc681_search_project}
-and then invoke the \texttt{Driver.py} program.  By default, the program will
-generate and solve a $10 \times 10$ board conforming to the problem statement's
-obstacle and objective frequencies.  Also by default, the program will use a
-fixed choice of heuristic.  However, the size of board, board-generation
+and then invoke the \texttt{Driver.py} program as specified in the README.
+By default, the program will generate and solve a $10 \times 10$ board conforming 
+to the problem statement's obstacle and objective frequencies.  
+Also by default, the program will use a fixed choice of both single-objective and
+multi-objective heuristic. However, the size of board, board-generation
 procedure, and choice of heuristic can all be given as arguments to the
 \texttt{Driver.py} program.
 
@@ -275,7 +285,7 @@ runtime performance and optimality of the generated path
 \subsection{Runtime Performance}
 Each combination of a single-objective heuristic and a multiobjective
 heuristic--e.g., the Manhattan distance single-objective heuristic and the
-nearest-neighbor multi-objective heuristic--is ran multiple times on boards of
+nearest-neighbor multi-objective heuristic--is executed 20 times on boards of
 increasing size for a fixed number of objectives.  In initial testing we
 observed large variation in runtime due to differences in obstacle layout on
 the randomly generated boards.  Consequently, we report the mean and standard
@@ -374,10 +384,10 @@ We have explored the impact of heuristic choice on a multi-objective search
 problem utili zing the A* search algorithm.  Multiple heuristics for both
 single-objective A* and the multi-objective routine utlizing A* are examined
 theoretically and tested for runtime performance.  In addition to our
-implementation of A* and the heuristics, our application provides dive rse
+implementation of A* and the heuristics, our application provides diverse
 methods for constructing instances of the search problem and allows future
 developers to extend the solvers we provide by adding their own heuristics and
-multi-objective stra tegies.
+multi-objective strategies.
 
 
 %\bibliographystyle{IEEEtran}
