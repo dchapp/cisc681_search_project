@@ -12,11 +12,17 @@ This project contains our team's implementation of the A\* algorithm with two he
 ### Dependencies
 Python 2.7
 numpy
+argparse
 
 ### Usage
 ./src/Driver.py will run the algorithm with default settings:
 ```
 $python ./src/Driver.py
+```
+
+To display the help menu, run:
+```
+$python ./src/Driver.py -h
 ```
 
 Several options can be specified regarding board generation and herustics:
