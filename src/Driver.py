@@ -40,6 +40,10 @@ def main():
             default=5, help='number of mice to place on board')
     parser.add_argument('-n', '--size', type=int, required=False,
             default=10, help='size of the board: nxn')
+    parser.add_argument('-ix', '--init_x', type=int, required=False,
+            default=-1, help='initial x position')
+    parser.add_argument('-iy', '--init_y', type=int, required=False,
+            default=-1, help='initial y position')
     args = parser.parse_args()
 
     # Generate Board
@@ -59,7 +63,10 @@ def main():
         heuristic = heuristic_euclidean
 
     # find valid starting position on the board
-    init_pos = find_legal_starting_position(board)
+    if (args.init_x * args.init_y) >= 0:
+        init_pos = (args.init_x, args.init_y)
+    else:
+        init_pos = find_legal_starting_position(board)
 
     # print the board for user inspection
     p_board = np.array(board)

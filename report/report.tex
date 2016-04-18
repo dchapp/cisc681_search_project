@@ -224,7 +224,45 @@ Consequently, we report the mean and standard deviation of the runtimes for each
 \end{figure}
 
 \subsection{Optimality}
+The A* algorithm is guarunteed to return the shortest path from a start to end
+objective if the heuristic used in admissible.  Both the manhattan and
+euclidean heuristic we developed are admissible for this search problem.  We
+can guarantee that our heuristics are admissible because they both
+underestimate the cost to the closest goal.  By using the nearest goal, we are
+guaranteed to find the shortest path to {\em any} goal.  Additionally, the
+euclidean distance and manhattan distance will always be less than the or equal
+to the actual cost of reaching a goal node.  This is true for Euclidean
+distance because it calculates the straight line distance between a start and
+goal node.  The straight line between any two points is the shortest path
+between those points.  This is true for manhattan distance because manhattan
+distance estimates distance using the same rules that the cat can move by
+(i.e., can only move horizontally or vertically.)  The manhattan heuristic also
+ignores obstacles, so it will be less than or equal to the actual distance
+between a start and goal.
 
+The Nearest Neighbor multi-objective heuristic for this search problem is not
+always optimal.  However, it often produces paths which are very close to
+optimal.  The reason for non-optimality is that the algorithm will always
+choose the path to the nearest goal to the current position.  This does not
+account for the distribution of the remaining goals on the map.  As an example,
+figure~\ref{nonopt} shows an input map and the non-optimal solution found by
+the Nearest Neighbor heuristic.
+
+\begin{figure}[ht]
+    \centering
+    \includegraphics[width=0.5\textwidth]{map_mo.jpg}
+    \includegraphics[width=0.5\textwidth]{map_mo_nonopt.jpg}
+    \caption{An example multi-objective map and the Nearest Neighbor
+heuristic's non-optimal solution.  Path length: 23}
+    \label{nonopt}
+\end{figure}
+\begin{figure}[ht]
+    \centering
+    \includegraphics[width=0.5\textwidth]{map_mo_opt.jpg}
+    \caption{The optimal solution found from the Minimum Spanning Tree
+heuristic.  Path length: 22}
+    \label{opt}
+\end{figure}
 
 \section{Future Work}
 Mike
