@@ -123,13 +123,14 @@ implementation.  To achieve a path from the starting point through all goals,
 we implemented two different multi-objective heuristics.
 
 The first heuristic is a na\"{\i}ve implementation of multi-objective A*.  A
-path to all goals is built by finding the subpath between a start point and the
-nearest goal.  This is accomlished through iterative calls to the A* algorithm
-while changing the start position.  Psuedocode for this multi-objective
-heuristic can be found in algorithm~\ref{nna}.
+path to all goals is built by finding the subpath between a start point its
+Nearest Neighbor (NN), which is also a goal.  This is accomlished through
+iterative calls to the A* algorithm while changing the start position.
+Psuedocode for this multi-objective heuristic can be found in
+algorithm~\ref{nna}.
 
 \begin{algorithm}
-    \caption{Na\"{\i}ve multi-objective A*}
+    \caption{NN multi-objective A*}
     \label{nna}
     \begin{algorithmic}[1]
         \Procedure{NearestGoalAStar}{start, goals}
@@ -157,7 +158,7 @@ computed and the path with the minimum cost is returned.  Pseudocode for this
 multi-objective heuristic can be found in algorithm~\ref{ca}.
 
 \begin{algorithm}
-    \caption{Combinatorial multi-objective A*}
+    \caption{MST multi-objective A*}
     \label{ca}
     \begin{algorithmic}[1]
         \Procedure{CombinatorialAStar}{start, goals}
