@@ -26,7 +26,6 @@
 \section{Introduction}
 In this work we implement the A* search algorithm to solve the problem of directing a predator (e.g., a cat) through a maze of obstacles to multiple prey objectives (e.g., mice). 
 We introduce heuristics specifically tailored to this multi-objective pathfinding problem and provide an empirical evaluation of their performance. 
-Dylan
 
 \section{Related Work}
 Mike
@@ -67,7 +66,7 @@ Note that the $h$ argument indicates the handle of the particular heuristic func
                 \Else
                         \For{$n \in current.neighbors()$}
                         \State $\text{cost} \gets \text{costToReach[current]} + 1$
-                            \If {$n \notin \text{costToReach}$ or \\ cost $<$ costToReach[n]}
+                        \If {$n \notin \text{costToReach}$ or \\ \hspace{1in}cost $<$ costToReach[n]}
                                 \State costToReach[n] = cost
                                 \State \hl{$p = \text{cost} + h(\text{goal}, n)$}
                                 \State frontier.insert($n$, $p$)
@@ -199,7 +198,7 @@ The initial impetus for providing a more flexible board-generation procedure tha
 
 \subsection{Use}
 To use our implementation, first ensure that all dependencies are met as per the README available at \url{https://github.com/dchapp/cisc681_search_project} and then invoke the \texttt{Driver.py} program. 
-By default, the program will generate and solve a $20 \times 20$ board conforming to the problem statement's obstacle and objective frequencies.
+By default, the program will generate and solve a $10 \times 10$ board conforming to the problem statement's obstacle and objective frequencies.
 Also by default, the program will use a fixed choice of heuristic.
 However, the size of board, board-generation procedure, and choice of heuristic can all be given as arguments to the \texttt{Driver.py} program. 
 
@@ -294,7 +293,7 @@ rse methods for constructing instances of the search problem and allows future d
 tegies.
 
 
-\bibliographystyle{IEEEtran}
-\bibliography{bibliography}
+%\bibliographystyle{IEEEtran}
+%\bibliography{bibliography}
 
 \end{document}
