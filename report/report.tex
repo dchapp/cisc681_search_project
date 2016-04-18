@@ -223,6 +223,21 @@ Consequently, we report the mean and standard deviation of the runtimes for each
     \label{variability-fig}
 \end{figure}
 
+The time complexity of the single-objective A* algorithm is $O(b^d)$ where $d$ is the dep
+th of the optimal path to the nearest goal and $b$ is the average branching factor.
+In practice, we assume $b = 3$ since for any node, there are three neighbors that can be
+expanded.
+For the multi-objective procedures that invoke single-objective A*, the nearest-neighbor
+strategy has time complexity $O(g)$ and the minimum spanning-tree strategy has time compl
+exity $O(g^2)$ where $g$ is the number of goals and we assume an average constant cost of
+ calls to single-objective A* by amortizing over the goals.
+
+We observe agreement between the empirical runtime data and the expected theoretical perf
+ormance of the algorithms-heuristic combinations.
+However, in future work we would like to explore larger boards and vary the number of obj
+ectives to put this claim on firmer footing.
+
+
 \subsection{Optimality}
 
 
