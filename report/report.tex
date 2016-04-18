@@ -90,7 +90,12 @@ However, the size of board, board-generation procedure, and choice of heuristic 
 There are two factors upon which we judge the quality of our implementation: runtime performance and optimality of the generated path.  
 
 \subsection{Runtime Performance}
-Dylan
+Each combination of a single-objective heuristic and a multiobjective heuristic--e.g., the Manhattan distance single-objective heuristic and the nearest-neighbor multi-objective heuristic--is ran multiple times on boards of increasing size for a fixed number of objectives.
+In initial testing we observed large variation in runtime due to differences in obstacle layout on the randomly generated boards. 
+Consequently, we report the mean and standard deviation of the runtimes for each heuristic combination. 
+
+
+
 
 \subsection{Optimality}
 Mike
