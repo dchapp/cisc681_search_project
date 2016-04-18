@@ -6,12 +6,13 @@
 \usepackage{tikz}
 
 %%% Package and definitions for displaying pseudocode
+\usepackage{algorithm}
 \usepackage[noend]{algpseudocode}
-\newcommand*\Let[2]{\State #1 $\gets$ #2}
-\algrenewcommand\alglinenumber[1]{
-    {\sf\footnotesize\addfontfeatures{Colour=888888,Numbers=Monospaced}#1}}
-\algrenewcommand\algorithmicrequire{\textbf{Precondition:}}
-\algrenewcommand\algorithmicensure{\textbf{Postcondition:}}
+%\newcommand*\Let[2]{\State #1 $\gets$ #2}
+%\algrenewcommand\alglinenumber[1]{
+%    {\sf\footnotesize\addfontfeatures{Colour=888888,Numbers=Monospaced}#1}}
+%\algrenewcommand\algorithmicrequire{\textbf{Precondition:}}
+%\algrenewcommand\algorithmicensure{\textbf{Postcondition:}}
 
 
 \begin{document}
@@ -60,12 +61,31 @@ Below, we provide pseudocode for A* highlighting the difference.
 %        \EndFunction
 %    \end{algorithmic}
 %\end{algorithm}
-            
-            
 
 \subsection{Single Objective A* Heuristics}
-Mke
-
+We developed two valid heuristics for A*.  Both are valid because they
+consistently underestimate the actual cost from a position to a goal node.  The
+first heuristic calculates the manhattan distance between a position and a goal
+node.  The second heuristic calculates the euclidean distance between the two
+points.  If there is more than one goal, the heuristics will calculate the
+distance to each goal and return the distance to the nearest goal.  Pseudocode
+for each heurstic can be found below.
+\begin{algorithm}
+    \caption{Manhattan distance heuristic}
+    \label{manhattan}
+    \begin{algorithmic}[1]
+        \Procedure{Manhattan}{start, goals}
+        \State $minDist\gets \infty$
+        \State $(x1, y1)\gets start$
+        \For{each point $goal$ in $goals$}
+        \State $(x2, y2)\gets goal$
+        \State $dist\gets \lvert x2-x1\rvert + \lvert y2-y1\rvert$
+        \State $minDist\gets min(dist, minDist)$
+        \EndFor
+        \Return $minDist$
+        \EndProcedure
+    \end{algorithmic}
+\end{algorithm}
 \subsection{Multi Objective A* Heuristics}
 Mike
 
