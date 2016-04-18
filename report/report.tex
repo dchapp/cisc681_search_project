@@ -193,7 +193,7 @@ found in algorithm~\ref{nna}.
 
 The second heuristic works by exhaustively searching all possible paths and
 returning the path which touches each goal and has the lowest cost.  This path
-can thought of as a Minimum Spanning Tree (MST) for the start and goals.  The
+can thought of as a Minimum Spanning Path (MSP) for the start and goals.  The
 algorithm first builds a library of all possible subpaths between any two
 points in the set of start and goal positions.  Using this library, it then
 builds all possible paths of an appropriate length ($len(goals)-1$).  The
@@ -209,7 +209,7 @@ calculates the cost of a path using the path and a list of costs for all
 subpaths.
 
 \begin{algorithm}
-    \caption{MST multi-objective A*}
+    \caption{MSP multi-objective A*}
     \label{ca}
     \begin{algorithmic}[1]
         \Procedure{CombinatorialAStar}{start, goals}
@@ -300,7 +300,7 @@ is the depth of the optimal path to the nearest goal and $b$ is the average
 branching factor.  In practice, we assume $b = 3$ since for any node, there are
 three neighbors that can be expanded.  For the multi-objective procedures that
 invoke single-objective A*, the nearest-neighbor strategy has time complexity
-$O(g)$ and the minimum spanning-tree strategy has time compl exity $O(g^2)$
+$O(g)$ and the minimum spanning-path strategy has time compl exity $O(g^2)$
 where $g$ is the number of goals and we assume an average constant cost of
 calls to single-objective A* by amortizing over the goals.
 
@@ -334,7 +334,7 @@ account for the distribution of the remaining goals on the map.  As an example,
 figure~\ref{nonopt} shows an input map and the non-optimal solution found by
 the Nearest Neighbor heuristic.
 
-The Minimum Spanning Tree multi-objective heuristic will always find the
+The Minimum Spanning Path multi-objective heuristic will always find the
 optimal path, but at the cost of time complexity.  Because this heuristic
 computes the cost of all possible paths through the start point and goals, it
 takes much longer to compute with large boards.  However, it will always
@@ -352,7 +352,7 @@ heuristic's non-optimal solution.  Path length: 23}
 \begin{figure}[t]
     \centering
     \includegraphics[width=0.4\textwidth]{map_mo_opt.jpg}
-    \caption{The optimal solution found from the Minimum Spanning Tree
+    \caption{The optimal solution found from the Minimum Spanning Path
 heuristic.  Path length: 22}
     \label{opt}
 \end{figure}
@@ -362,7 +362,7 @@ The work we have presented in this report is complete for the purposes of
 cat-and-mouse problem.  However, as the size and complexity of the problem
 becomes larger, our methods will need to be expanded and optimized to allow for
 faster computation of a shortest path.  In order to accomodate very large
-boards and high dimension boards, the combinatorial method of the MST heuristic
+boards and high dimension boards, the combinatorial method of the MSP heuristic
 will become increasingly slow.  Optimizations can be made by reducing the
 number of paths which are tested.  For example, rather than testing every
 possible path, some of which may not be connected, build and test only paths

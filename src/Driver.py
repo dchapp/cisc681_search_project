@@ -28,9 +28,9 @@ def main():
     parser.add_argument('-b', '--bfile', type=str, required=False,
             default=False, help='file containing board')
     parser.add_argument('-o', '--multiheuristic', type=str, required=False,
-            default='nn', choices=['nn', 'mst'], help='''desire multiobjective
-            heuristic to use with A*.  Valid inputs are "nn" and "mst", which
-            are "nearest neighbor" and "minimum spanning tree",
+            default='nn', choices=['nn', 'msp'], help='''desire multiobjective
+            heuristic to use with A*.  Valid inputs are "nn" and "comb", which
+            are "nearest neighbor" and "minimum spanning path",
             respectively''')
     parser.add_argument('-hr', '--heuristic', type=str, required=False,
             default='manhattan', choices=['manhattan', 'euclidean'],
@@ -55,7 +55,7 @@ def main():
     # Get appropriate heuristics for multiobjective and single objective A*
     if args.multiheuristic == 'nn':
         solver = nearest_neighbor_a_star
-    if args.multiheuristic == 'mst':
+    if args.multiheuristic == 'msp':
         solver = combinatorial_a_star
     if args.heuristic == 'manhattan':
         heuristic = heuristic_manhattan
@@ -63,7 +63,7 @@ def main():
         heuristic = heuristic_euclidean
 
     # find valid starting position on the board
-    if (args.init_x * args.init_y) >= 0:
+    if args.init_x >= 0 and args.init_y >= 0:
         init_pos = (args.init_x, args.init_y)
     else:
         init_pos = find_legal_starting_position(board)
