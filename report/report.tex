@@ -264,17 +264,19 @@ account for the distribution of the remaining goals on the map.  As an example,
 figure~\ref{nonopt} shows an input map and the non-optimal solution found by
 the Nearest Neighbor heuristic.
 
+The Minimum Spanning Tree multi-objective heuristic will always find the optimal path, but at the cost of time complexity.  Because this heuristic computes the cost of all possible paths through the start point and goals, it takes much longer to compute with large boards.  However, it will always produce the most optimal path.  The optimal path determined by this heuristic for the same map as in figure~\ref{nonopt} can be seen in figure~\ref{opt}.
+
 \begin{figure}[ht]
     \centering
-    \includegraphics[width=0.5\textwidth]{map_mo.jpg}
-    \includegraphics[width=0.5\textwidth]{map_mo_nonopt.jpg}
+    \includegraphics[width=0.4\textwidth]{map_mo.jpg}
+    \includegraphics[width=0.4\textwidth]{map_mo_nonopt.jpg}
     \caption{An example multi-objective map and the Nearest Neighbor
 heuristic's non-optimal solution.  Path length: 23}
     \label{nonopt}
 \end{figure}
 \begin{figure}[ht]
     \centering
-    \includegraphics[width=0.5\textwidth]{map_mo_opt.jpg}
+    \includegraphics[width=0.4\textwidth]{map_mo_opt.jpg}
     \caption{The optimal solution found from the Minimum Spanning Tree
 heuristic.  Path length: 22}
     \label{opt}
